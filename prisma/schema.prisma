@@ -17,6 +17,7 @@ model Inspection {
   // Step 1: Allgemeine Daten
   inspectionDate       String
   supplier             String
+  articleName          String   @default("")
   orderNumber          String   @default("")
   deliveryNoteNumber   String   @default("")
   inspector            String
@@ -65,5 +66,11 @@ model Supplier {
   id        String   @id @default(cuid())
   name      String   @unique
   email     String?
+  createdAt DateTime @default(now())
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  name      String   @unique
   createdAt DateTime @default(now())
 }

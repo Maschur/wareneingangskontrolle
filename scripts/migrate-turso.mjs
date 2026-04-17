@@ -1,5 +1,4 @@
 import { createClient } from "@libsql/client";
-import { readFileSync } from "fs";
 import "dotenv/config";
 
 const client = createClient({
@@ -7,14 +6,25 @@ const client = createClient({
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
-const sql = readFileSync("prisma/migrations/20260417212354_init/migration.sql", "utf-8");
-
-// Split on semicolons and execute each statement
-const statements = sql.split(";").map(s => s.trim()).filter(s => s.length > 0);
+// Migration: add Article table + articleName column to Inspection
+const statements = [
+  `CREATE TABLE IF NOT EXISTS "Article" ("id" TEXT NOT NULL PRIMARY KEY, "name" TEXT NOT NULL, "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS "Article_name_key" ON "Article"("name")`,
+  `ALTER TABLE "Inspection" ADD COLUMN "articleName" TEXT NOT NULL DEFAULT ''`,
+];
 
 for (const stmt of statements) {
-  console.log("Executing:", stmt.slice(0, 60) + "...");
-  await client.execute(stmt);
+  console.log("Executing:", stmt.slice(0, 70) + "...");
+  try {
+    await client.execute(stmt);
+  } catch (e) {
+    // Ignore "duplicate column" errors for idempotency
+    if (e.message?.includes("duplicate column")) {
+      console.log("  (already exists, skipping)");
+    } else {
+      throw e;
+    }
+  }
 }
 
 console.log("\n✓ Turso migration complete!");

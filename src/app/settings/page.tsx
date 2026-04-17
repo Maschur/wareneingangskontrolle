@@ -1,10 +1,12 @@
 import Header from "@/components/Header";
-import { getSuppliersWithIds } from "@/lib/actions";
+import { getSuppliersWithIds, getArticlesWithIds } from "@/lib/actions";
 import SupplierList from "./SupplierList";
+import ArticleList from "./ArticleList";
 import ThemeToggle from "./ThemeToggle";
 
 export default async function SettingsPage() {
   const suppliers = await getSuppliersWithIds();
+  const articles = await getArticlesWithIds();
 
   return (
     <div className="flex flex-col min-h-full">
@@ -17,6 +19,15 @@ export default async function SettingsPage() {
             <h2 className="text-lg font-bold text-gray-800 mb-1">Darstellung</h2>
             <p className="text-sm text-gray-500 mb-4">Zwischen hellem und dunklem Modus wechseln.</p>
             <ThemeToggle />
+          </section>
+
+          {/* Articles */}
+          <section>
+            <h2 className="text-lg font-bold text-gray-800 mb-1">Artikel verwalten</h2>
+            <p className="text-sm text-gray-500 mb-5">
+              Artikel hinzufügen oder entfernen. Z. B. Laptop, Kabel, Monitor etc.
+            </p>
+            <ArticleList articles={articles} />
           </section>
 
           {/* Suppliers */}

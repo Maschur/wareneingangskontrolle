@@ -12,6 +12,7 @@ export async function createInspection(data: InspectionInput): Promise<string> {
     data: {
       inspectionDate: data.inspectionDate,
       supplier: data.supplier,
+      articleName: data.articleName,
       orderNumber: data.orderNumber,
       deliveryNoteNumber: data.deliveryNoteNumber,
       inspector: data.inspector,
@@ -69,6 +70,7 @@ export async function getInspections(search?: string, limit?: number) {
     createdAt: r.createdAt,
     inspectionDate: fmt(r.inspectionDate),
     supplier: r.supplier,
+    articleName: r.articleName,
     orderNumber: r.orderNumber,
     deliveryNoteNumber: r.deliveryNoteNumber,
     inspector: r.inspector,
@@ -110,6 +112,7 @@ export async function getInspection(id: string) {
     createdAt: r.createdAt,
     inspectionDate: fmt(r.inspectionDate),
     supplier: r.supplier,
+    articleName: r.articleName,
     orderNumber: r.orderNumber,
     deliveryNoteNumber: r.deliveryNoteNumber,
     inspector: r.inspector,
@@ -271,4 +274,34 @@ export async function getSuppliersWithIds() {
 export async function updateSupplierEmail(id: string, email: string) {
   await prisma.supplier.update({ where: { id }, data: { email: email.trim() || null } });
   revalidatePath("/settings");
+}
+
+// ── Artikel ──
+
+export async function getArticles(): Promise<string[]> {
+  const rows = await prisma.article.findMany({ orderBy: { name: "asc" } });
+  return rows.map((r) => r.name);
+}
+
+export async function getArticlesWithIds() {
+  return prisma.article.findMany({ orderBy: { name: "asc" } });
+}
+
+export async function addArticle(name: string): Promise<{ error?: string }> {
+  const trimmed = name.trim();
+  if (!trimmed) return { error: "Name darf nicht leer sein." };
+
+  const existing = await prisma.article.findUnique({ where: { name: trimmed } });
+  if (existing) return { error: "Artikel existiert bereits." };
+
+  await prisma.article.create({ data: { name: trimmed } });
+  revalidatePath("/settings");
+  revalidatePath("/new");
+  return {};
+}
+
+export async function deleteArticle(id: string) {
+  await prisma.article.delete({ where: { id } });
+  revalidatePath("/settings");
+  revalidatePath("/new");
 }

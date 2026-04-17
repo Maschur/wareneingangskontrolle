@@ -2,6 +2,7 @@ export interface InspectionInput {
   // Step 1: Allgemeine Daten
   inspectionDate: string;
   supplier: string;
+  articleName: string;
   orderNumber: string;
   deliveryNoteNumber: string;
   inspector: string;

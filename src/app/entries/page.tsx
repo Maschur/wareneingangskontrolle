@@ -67,7 +67,7 @@ export default async function EntriesPage({
                         </span>
                       </div>
                       <p className="text-xs text-gray-500 mt-0.5">
-                        Prüfer: {entry.inspector}
+                        {entry.articleName && `${entry.articleName} · `}Prüfer: {entry.inspector}
                         {entry.orderNumber && ` · Best.-Nr. ${entry.orderNumber}`}
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">

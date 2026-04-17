@@ -48,6 +48,7 @@ export default async function InspectionDetailPage({
           <Section title="1. Allgemeine Daten">
             <DetailRow label="Prüfdatum" value={entry.inspectionDate} />
             <DetailRow label="Lieferant" value={entry.supplier} />
+            <DetailRow label="Artikel / Ware" value={entry.articleName || "–"} />
             <DetailRow label="Bestellnummer" value={entry.orderNumber || "–"} />
             <DetailRow label="Lieferscheinnr." value={entry.deliveryNoteNumber || "–"} />
             <DetailRow label="Prüfer" value={entry.inspector} />

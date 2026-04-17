@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import { createInspection } from "@/lib/actions";
-import { getSuppliers } from "@/lib/actions";
+import { getSuppliers, getArticles } from "@/lib/actions";
 import { QUANTITY_DEFECTS, IDENTITY_DEFECTS, QUALITY_DEFECTS, DOCUMENT_DEFECTS, ACTION_TYPES } from "@/lib/constants";
 import type { InspectionInput } from "@/types";
 
@@ -23,6 +23,7 @@ const STEP_TITLES = [
 const initialState: InspectionInput = {
   inspectionDate: new Date().toISOString().slice(0, 10),
   supplier: "",
+  articleName: "",
   orderNumber: "",
   deliveryNoteNumber: "",
   inspector: "",
@@ -52,11 +53,13 @@ export default function NewInspectionPage() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<InspectionInput>(initialState);
   const [suppliers, setSuppliers] = useState<string[]>([]);
+  const [articles, setArticles] = useState<string[]>([]);
   const [showScanner, setShowScanner] = useState<"order" | "delivery" | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     getSuppliers().then(setSuppliers);
+    getArticles().then(setArticles);
   }, []);
 
   function update(partial: Partial<InspectionInput>) {
@@ -74,7 +77,7 @@ export default function NewInspectionPage() {
 
   function canAdvance(): boolean {
     switch (step) {
-      case 1: return data.supplier.length > 0 && data.inspector.length > 0;
+      case 1: return data.supplier.length > 0 && data.inspector.length > 0 && data.articleName.length > 0;
       case 2: return true;
       case 3: return true;
       case 4: return true;
@@ -137,6 +140,20 @@ export default function NewInspectionPage() {
                     Anderer Lieferant…
                   </button>
                 )}
+              </Field>
+
+              <Field label="Artikel / Ware *">
+                <div className="grid grid-cols-2 gap-2">
+                  {articles.map((a) => (
+                    <SelectButton key={a} label={a} selected={data.articleName === a} onClick={() => update({ articleName: a })} />
+                  ))}
+                </div>
+                {!articles.includes(data.articleName) && data.articleName !== "" && (
+                  <input type="text" value={data.articleName} onChange={(e) => update({ articleName: e.target.value })} className="input mt-2" placeholder="Artikel eingeben…" autoFocus />
+                )}
+                <button type="button" onClick={() => update({ articleName: data.articleName === "__other" ? "" : "__other" })} className={`mt-2 text-xs font-medium ${data.articleName && !articles.includes(data.articleName) ? "text-magenta" : "text-gray-400"}`}>
+                  Anderer Artikel…
+                </button>
               </Field>
 
               <Field label="Bestellnummer">
@@ -309,6 +326,7 @@ export default function NewInspectionPage() {
                 <h3 className="font-semibold text-gray-800 mb-2">Zusammenfassung</h3>
                 <SummaryRow label="Datum" value={data.inspectionDate} />
                 <SummaryRow label="Lieferant" value={data.supplier} />
+                <SummaryRow label="Artikel" value={data.articleName || "–"} />
                 <SummaryRow label="Bestellnr." value={data.orderNumber || "–"} />
                 <SummaryRow label="Lieferscheinnr." value={data.deliveryNoteNumber || "–"} />
                 <SummaryRow label="Prüfer" value={data.inspector} />

@@ -33,6 +33,7 @@ export default async function PrintPage({
             <PrintRow label="Prüfdatum" value={entry.inspectionDate} />
             <PrintRow label="Prüfer" value={entry.inspector} />
             <PrintRow label="Lieferant" value={entry.supplier} />
+            <PrintRow label="Artikel / Ware" value={entry.articleName || "–"} />
             <PrintRow label="Bestellnummer" value={entry.orderNumber || "–"} />
             <PrintRow label="Lieferscheinnummer" value={entry.deliveryNoteNumber || "–"} />
           </tbody>
