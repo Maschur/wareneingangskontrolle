@@ -1,7 +1,7 @@
 {
-  "name": "Wareneingangskontrolle",
+  "name": "JJN-WarenCheck",
   "short_name": "WE-Kontrolle",
-  "description": "Mobile Wareneingangskontrolle – Barcode scannen, Zustand erfassen.",
+  "description": "JJN-WarenCheck – Barcode scannen, Zustand erfassen.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

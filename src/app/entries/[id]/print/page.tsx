@@ -22,7 +22,7 @@ export default async function PrintPage({
       <div className="max-w-2xl mx-auto px-6 py-8 print:px-0 print:py-0">
         {/* Header */}
         <div className="border-b-2 border-magenta pb-4 mb-6 print:border-black">
-          <h1 className="text-xl font-bold text-gray-800">Wareneingangskontrolle – Prüfbericht</h1>
+          <h1 className="text-xl font-bold text-gray-800">JJN-WarenCheck – Prüfbericht</h1>
           <p className="text-sm text-gray-500 mt-1">Erstellt am {date}</p>
         </div>
 

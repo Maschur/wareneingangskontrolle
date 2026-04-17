@@ -18,7 +18,7 @@ export default function LoginPage() {
               <line x1="12" y1="22.08" x2="12" y2="12" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold">Wareneingangskontrolle</h1>
+          <h1 className="text-xl font-bold">JJN-WarenCheck</h1>
           <p className="text-sm text-white/80 mt-1">Bitte anmelden</p>
         </div>
       </header>

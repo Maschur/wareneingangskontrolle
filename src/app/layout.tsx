@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wareneingangskontrolle",
-  description: "Mobile Wareneingangskontrolle – Barcode scannen, Zustand erfassen, Übersicht behalten.",
+  title: "JJN-WarenCheck",
+  description: "JJN-WarenCheck – Barcode scannen, Zustand erfassen, Übersicht behalten.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

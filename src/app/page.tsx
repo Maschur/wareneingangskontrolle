@@ -15,13 +15,12 @@ export default function LandingPage() {
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-              <line x1="12" y1="22.08" x2="12" y2="12" />
+              <path d="M9 12l2 2 4-4" />
+              <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" />
             </svg>
           </div>
           <div className="flex-1">
-            <h1 className="text-lg font-bold leading-tight">Wareneingangskontrolle</h1>
+            <h1 className="text-lg font-bold leading-tight">JJN-WarenCheck</h1>
             <p className="text-xs text-white/80">Prüf- & Erfassungssystem</p>
           </div>
           <button
@@ -121,7 +120,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-gray-50 border-t border-gray-200 px-4 py-4 mt-8">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs text-gray-400">Wareneingangskontrolle v2.0 · Internes Prüfsystem</p>
+          <p className="text-xs text-gray-400">JJN-WarenCheck v2.0 · Internes Prüfsystem</p>
         </div>
       </footer>
 
