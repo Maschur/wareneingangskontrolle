@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Inspection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // Step 1: Allgemeine Daten
+  inspectionDate       String
+  supplier             String
+  orderNumber          String   @default("")
+  deliveryNoteNumber   String   @default("")
+  inspector            String
+
+  // Step 2: Mengenprüfung
+  quantityCorrect      Boolean  @default(true)
+  quantityDeviation    String?
+  quantityDefects      String   @default("[]")
+
+  // Step 3: Identitätsprüfung
+  correctArticle       Boolean  @default(true)
+  articleNumberCorrect Boolean  @default(true)
+  identityDefects      String   @default("[]")
+  identityNotes        String?
+
+  // Step 4: Qualitäts- & Sichtprüfung
+  packagingOk          Boolean  @default(true)
+  productOk            Boolean  @default(true)
+  qualityOk            Boolean  @default(true)
+  qualityDefects       String   @default("[]")
+  qualityNotes         String?
+
+  // Step 5: Dokumentenprüfung
+  deliveryNotePresent  Boolean  @default(true)
+  dataMatchesOrder     Boolean  @default(true)
+  documentDefects      String   @default("[]")
+
+  // Step 6: Maßnahmen bei Mängeln
+  actions              String   @default("[]")
+  actionDescription    String?
+  complaintSent        Boolean  @default(false)
+
+  // Step 7: Abschluss
+  released             Boolean  @default(false)
+  storedAt             String?
+  signatureInspector   String?
+
+  notes                String?
+
+  @@index([supplier])
+  @@index([createdAt])
+  @@index([inspector])
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  email     String?
+  createdAt DateTime @default(now())
+}

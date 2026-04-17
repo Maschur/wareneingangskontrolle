@@ -1,26 +1,142 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
+  --telekom-magenta: #e20074;
+  --telekom-magenta-dark: #b8005c;
+  --telekom-magenta-light: #f0609e;
+  --telekom-gray-50: #f9f9f9;
+  --telekom-gray-100: #ededed;
+  --telekom-gray-200: #d9d9d9;
+  --telekom-gray-400: #999999;
+  --telekom-gray-600: #666666;
+  --telekom-gray-800: #333333;
+  --telekom-success: #00a651;
+  --telekom-warning: #ffc832;
+  --telekom-danger: #d90000;
+  --telekom-surface: #ffffff;
+  --telekom-surface-alt: #f9f9f9;
+}
+
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  --telekom-gray-50: #141414;
+  --telekom-gray-100: #1e1e1e;
+  --telekom-gray-200: #2a2a2a;
+  --telekom-gray-400: #777777;
+  --telekom-gray-600: #aaaaaa;
+  --telekom-gray-800: #e0e0e0;
+  --telekom-surface: #1a1a1a;
+  --telekom-surface-alt: #111111;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-magenta: var(--telekom-magenta);
+  --color-magenta-dark: var(--telekom-magenta-dark);
+  --color-magenta-light: var(--telekom-magenta-light);
+  --color-gray-50: var(--telekom-gray-50);
+  --color-gray-100: var(--telekom-gray-100);
+  --color-gray-200: var(--telekom-gray-200);
+  --color-gray-400: var(--telekom-gray-400);
+  --color-gray-600: var(--telekom-gray-600);
+  --color-gray-800: var(--telekom-gray-800);
+  --color-success: var(--telekom-success);
+  --color-warning: var(--telekom-warning);
+  --color-danger: var(--telekom-danger);
+  --color-surface: var(--telekom-surface);
+  --color-surface-alt: var(--telekom-surface-alt);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode: override bg-white to use surface */
+html.dark .bg-white {
+  background-color: var(--telekom-surface) !important;
+}
+
+html.dark .border-gray-100 {
+  border-color: var(--telekom-gray-200) !important;
+}
+
+html.dark .text-gray-800 {
+  color: var(--telekom-gray-800) !important;
+}
+
+html.dark .text-gray-700 {
+  color: var(--telekom-gray-600) !important;
+}
+
+html.dark .text-gray-600 {
+  color: var(--telekom-gray-600) !important;
+}
+
+html.dark .text-gray-500 {
+  color: var(--telekom-gray-400) !important;
+}
+
+html.dark .text-gray-400 {
+  color: var(--telekom-gray-400) !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: var(--telekom-gray-100);
+  color: var(--telekom-gray-800);
+  border-color: var(--telekom-gray-200);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .print\:py-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .print\:border-black {
+    border-color: #000 !important;
+  }
+
+  html.dark .bg-white {
+    background-color: #fff !important;
+  }
 }
