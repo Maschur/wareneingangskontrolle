@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
@@ -11,6 +11,18 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
   const scannerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const html5QrCodeRef = useRef<unknown>(null);
+  const stoppedRef = useRef(false);
+  const onScanRef = useRef(onScan);
+  onScanRef.current = onScan;
+
+  const stopScanner = useCallback(async () => {
+    if (stoppedRef.current) return;
+    stoppedRef.current = true;
+    const scanner = html5QrCodeRef.current as { stop: () => Promise<void>; isScanning?: boolean } | null;
+    if (scanner) {
+      try { await scanner.stop(); } catch { /* already stopped */ }
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -30,8 +42,9 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
             qrbox: { width: 250, height: 150 },
           },
           (decodedText) => {
-            onScan(decodedText);
-            scanner.stop().catch(() => {});
+            stopScanner().then(() => {
+              onScanRef.current(decodedText);
+            });
           },
           () => {}
         );
@@ -46,12 +59,9 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
 
     return () => {
       mounted = false;
-      const scanner = html5QrCodeRef.current as { stop: () => Promise<void> } | null;
-      if (scanner) {
-        scanner.stop().catch(() => {});
-      }
+      stopScanner();
     };
-  }, [onScan]);
+  }, [stopScanner]);
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex flex-col items-center justify-center p-4">
